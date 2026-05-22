@@ -1,12 +1,10 @@
 {
   "name": "hox-id-card-builder",
-  "homepage": "https://.github.io/",
+  "homepage": "https://Gokus369.github.io/id_card",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
