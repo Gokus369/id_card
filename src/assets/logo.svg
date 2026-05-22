@@ -1,0 +1,10 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Top-Left Rounded Square -->
+    <rect x="15" y="15" width="22" height="22" rx="8" fill="#0e3b4a" />
+    
+    <!-- Bottom-Right Rounded Square -->
+    <rect x="63" y="63" width="22" height="22" rx="8" fill="#0e3b4a" />
+    
+    <!-- S-Wave Unified Shape (Bottom-Left to Top-Right Bridge) -->
+    <path d="M 15 57 C 15 49, 21 43, 29 43 H 49 C 57 43, 63 37, 63 29 V 23 A 8 8 0 0 1 71 15 H 77 A 8 8 0 0 1 85 23 V 43 C 85 51, 79 57, 71 57 H 51 C 43 57, 37 63, 37 71 V 77 A 8 8 0 0 1 29 85 H 23 A 8 8 0 0 1 15 77 Z" fill="#0e3b4a" />
+</svg>
