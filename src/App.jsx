@@ -39,7 +39,8 @@ function App() {
         try { return JSON.parse(localStorage.getItem('hox_records') || '[]'); }
         catch { return []; }
     });
-    
+    const [sheetsRecords, setSheetsRecords] = useState([]);
+    const [sheetsLoading, setSheetsLoading] = useState(false);
     // Notification & Loader state
     const [toast, setToast] = useState({ show: false, title: '', body: '', type: 'success' });
     const [loader, setLoader] = useState({ show: false, title: '', message: '' });
@@ -78,6 +79,25 @@ function App() {
         if (key === 'googleSheetsUrl') localStorage.setItem('hox_sheets_url', value.trim());
         if (key === 'whatsAppPhone') localStorage.setItem('hox_wa_phone', value.trim());
         if (key === 'autoWhatsApp') localStorage.setItem('hox_wa_auto', value);
+    };
+
+    // --- FETCH RECORDS FROM GOOGLE SHEETS ---
+    const fetchSheetsRecords = async () => {
+        const url = formData.googleSheetsUrl?.trim();
+        if (!url) return;
+        setSheetsLoading(true);
+        try {
+            const finalUrl = url.startsWith('http') ? url : `https://script.google.com/macros/s/${url}/exec`;
+            const res = await fetch(finalUrl, { method: 'GET' });
+            const json = await res.json();
+            if (json.status === 'success') {
+                setSheetsRecords(json.records || []);
+            }
+        } catch (err) {
+            console.warn('Could not load Sheets records:', err);
+        } finally {
+            setSheetsLoading(false);
+        }
     };
 
     // --- VISUAL TOAST AND LOADER ACTIONS ---
@@ -398,11 +418,11 @@ _"${source.backContent}"_
                             </svg>
                             Photo & Signature
                         </button>
-                        <button type="button" className={`tab-btn ${activeTab === 'vault-section' ? 'active' : ''}`} onClick={() => { setActiveTab('vault-section'); setIsFlipped(false); }}>
+                        <button type="button" className={`tab-btn ${activeTab === 'vault-section' ? 'active' : ''}`} onClick={() => { setActiveTab('vault-section'); setIsFlipped(false); fetchSheetsRecords(); }}>
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                             </svg>
-                            Records {savedRecords.length > 0 && <span style={{ background: 'var(--theme-gradient)', color: '#fff', borderRadius: '10px', fontSize: '0.65rem', padding: '1px 6px', marginLeft: '2px' }}>{savedRecords.length}</span>}
+                            Records {(savedRecords.length + sheetsRecords.length) > 0 && <span style={{ background: 'var(--theme-gradient)', color: '#fff', borderRadius: '10px', fontSize: '0.65rem', padding: '1px 6px', marginLeft: '2px' }}>{sheetsRecords.length || savedRecords.length}</span>}
                         </button>
                     </nav>
 
@@ -430,17 +450,61 @@ _"${source.backContent}"_
                     {/* Records Vault */}
                     {activeTab === 'vault-section' && (
                         <div id="vault-section" className="tab-content active">
-                            {savedRecords.length === 0 ? (
-                                <div className="vault-empty">
-                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                                    <p>No records yet. Submit a card to see it listed here.</p>
-                                </div>
-                            ) : (
-                                <>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{savedRecords.length} record{savedRecords.length !== 1 ? 's' : ''} saved locally</p>
-                                        <button className="btn btn-secondary btn-sm btn-danger" onClick={() => { if (window.confirm('Clear all records?')) { setSavedRecords([]); localStorage.removeItem('hox_records'); } }}>Clear All</button>
+
+                            {/* Sheets Records (cross-device) */}
+                            {formData.googleSheetsUrl && (
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                                        <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                                            🌐 All Devices — Google Sheets
+                                            {sheetsLoading && <span style={{ marginLeft: '0.5rem', fontSize: '0.7rem', color: 'var(--text-muted)' }}>Loading...</span>}
+                                        </p>
+                                        <button className="btn btn-secondary btn-sm" onClick={fetchSheetsRecords} disabled={sheetsLoading}>↻ Refresh</button>
                                     </div>
+                                    {sheetsRecords.length === 0 && !sheetsLoading ? (
+                                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>No records in Sheets yet. Submit a card first.</p>
+                                    ) : (
+                                        <div className="vault-grid">
+                                            {sheetsRecords.map(rec => {
+                                                const d = new Date(rec.timestamp);
+                                                const dateStr = isNaN(d) ? rec.timestamp : `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+                                                return (
+                                                    <div key={`sheet-${rec.id}`} className="vault-item">
+                                                        <div className="vault-info">
+                                                            <div className="vault-avatar" style={{ background: 'var(--theme-gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '1.1rem' }}>
+                                                                {rec.fullName?.[0] || '?'}
+                                                            </div>
+                                                            <div className="vault-details">
+                                                                <h5>{rec.fullName || 'Unnamed'}</h5>
+                                                                <p>{rec.designation}{rec.department ? ` · ${rec.department}` : ''}</p>
+                                                                <p style={{ fontSize: '0.7rem', marginTop: '2px', opacity: 0.6 }}>{dateStr}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="vault-actions">
+                                                            <button className="btn btn-secondary btn-sm" onClick={() => {
+                                                                setFormData(prev => ({ ...prev, ...rec }));
+                                                                setActiveTab('form-section');
+                                                                setIsFlipped(false);
+                                                                triggerToast('Record Loaded', `${rec.fullName}'s details loaded into the form.`, 'success');
+                                                            }}>Load</button>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Local Records */}
+                            <div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                                    <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>📱 This Device Only</p>
+                                    {savedRecords.length > 0 && <button className="btn btn-secondary btn-sm btn-danger" onClick={() => { if (window.confirm('Clear all local records?')) { setSavedRecords([]); localStorage.removeItem('hox_records'); } }}>Clear All</button>}
+                                </div>
+                                {savedRecords.length === 0 ? (
+                                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>No local records. Submit a card to save one here.</p>
+                                ) : (
                                     <div className="vault-grid">
                                         {savedRecords.map(rec => {
                                             const d = new Date(rec.timestamp);
@@ -459,15 +523,13 @@ _"${source.backContent}"_
                                                         </div>
                                                     </div>
                                                     <div className="vault-actions">
-                                                        <button className="btn btn-secondary btn-sm" title="Load this record" onClick={() => {
+                                                        <button className="btn btn-secondary btn-sm" onClick={() => {
                                                             setFormData(prev => ({ ...prev, ...rec }));
                                                             setActiveTab('form-section');
                                                             setIsFlipped(false);
                                                             triggerToast('Record Loaded', `${rec.fullName}'s details loaded into the form.`, 'success');
-                                                        }}>
-                                                            Load
-                                                        </button>
-                                                        <button className="btn btn-secondary btn-sm btn-danger" title="Delete record" onClick={() => {
+                                                        }}>Load</button>
+                                                        <button className="btn btn-secondary btn-sm btn-danger" onClick={() => {
                                                             setSavedRecords(prev => {
                                                                 const updated = prev.filter(r => r.id !== rec.id);
                                                                 localStorage.setItem('hox_records', JSON.stringify(updated));
@@ -481,8 +543,8 @@ _"${source.backContent}"_
                                             );
                                         })}
                                     </div>
-                                </>
-                            )}
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>
