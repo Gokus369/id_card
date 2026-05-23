@@ -849,6 +849,7 @@ input:focus + svg, select:focus + svg {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
     transition: transform var(--transition-slow);
 }
 
@@ -870,6 +871,29 @@ input:focus + svg, select:focus + svg {
     overflow: hidden;
     border: 1px solid rgba(14, 59, 74, 0.18);
     user-select: none;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform var(--transition-slow);
+}
+
+/* Safari / WebKit 3D flattening & bleed-through prevention toggles */
+.card-scene:not(.flipped) .id-card-front {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.card-scene:not(.flipped) .id-card-back {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.card-scene.flipped .id-card-front {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.card-scene.flipped .id-card-back {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .id-card::before {
