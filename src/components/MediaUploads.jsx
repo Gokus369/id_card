@@ -149,6 +149,7 @@ function MediaUploads({ formData, setFormData, onBack, onWhatsAppShare, updatePr
     }, [formData.signatureBase64]);
 
     const startDrawing = (e) => {
+        if (e.cancelable) e.preventDefault();
         // Ensure canvas is sized exactly to the parent container when starting interaction
         initializeCanvasSettings();
         const [x, y] = getCoordinates(e);
@@ -157,6 +158,7 @@ function MediaUploads({ formData, setFormData, onBack, onWhatsAppShare, updatePr
     };
 
     const draw = (e) => {
+        if (e.cancelable) e.preventDefault();
         if (!isDrawing || !canvasContextRef.current) return;
         const [x, y] = getCoordinates(e);
         const ctx = canvasContextRef.current;
@@ -248,6 +250,7 @@ function MediaUploads({ formData, setFormData, onBack, onWhatsAppShare, updatePr
                         <canvas 
                             ref={canvasRef}
                             id="signatureCanvas"
+                            style={{ touchAction: 'none' }}
                             onMouseDown={startDrawing}
                             onMouseMove={draw}
                             onMouseUp={stopDrawing}
