@@ -122,6 +122,39 @@ function App() {
         }
     };
 
+    // --- AUTO-GENERATE NEXT EMPLOYEE ID ---
+    const nextEmployeeId = useMemo(() => {
+        const allRecords = [...savedRecords, ...sheetsRecords];
+        let maxNum = 10; // 1 to 10 are taken, so start at 10 (next is 11)
+
+        allRecords.forEach(rec => {
+            const empId = rec.employeeId || '';
+            const match = empId.match(/HXL(\d+)/i);
+            if (match) {
+                const num = parseInt(match[1], 10);
+                if (!isNaN(num) && num > maxNum) {
+                    maxNum = num;
+                }
+            }
+        });
+
+        const nextNum = maxNum + 1;
+        const paddedNum = String(nextNum).padStart(5, '0');
+        return `HXL${paddedNum}`;
+    }, [savedRecords, sheetsRecords]);
+
+    useEffect(() => {
+        // Automatically prefill next ID if current ID is initial default or empty
+        if (formData.employeeId === 'HXL12345' || !formData.employeeId) {
+            setFormData(prev => {
+                if (prev.employeeId !== nextEmployeeId) {
+                    return { ...prev, employeeId: nextEmployeeId };
+                }
+                return prev;
+            });
+        }
+    }, [nextEmployeeId, formData.employeeId]);
+
     // --- VISUAL TOAST AND LOADER ACTIONS ---
     const triggerToast = (title, body, type = 'success', duration = 4000) => {
         if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
