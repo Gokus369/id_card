@@ -302,22 +302,43 @@ _"${source.backContent}"_
                 captureCard(backCard)
             ]);
 
+            // --- Combine both sides into one image ---
+            const SCALE = 3;
+            const CARD_W = 320 * SCALE;
+            const CARD_H = 506 * SCALE;
+            const GAP    = 24 * SCALE;   // gap between cards
+            const PAD    = 32 * SCALE;   // outer padding
+            const LABEL_H = 20 * SCALE;  // space for "FRONT" / "BACK" labels
+
+            const combined = document.createElement('canvas');
+            combined.width  = PAD + CARD_W + GAP + CARD_W + PAD;
+            combined.height = PAD + LABEL_H + CARD_H + PAD;
+
+            const ctx = combined.getContext('2d');
+
+            // White background
+            ctx.fillStyle = '#f5f5f5';
+            ctx.fillRect(0, 0, combined.width, combined.height);
+
+            // Labels
+            ctx.fillStyle = '#555';
+            ctx.font = `bold ${13 * SCALE}px Inter, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.fillText('FRONT', PAD + CARD_W / 2, PAD + LABEL_H * 0.75);
+            ctx.fillText('BACK',  PAD + CARD_W + GAP + CARD_W / 2, PAD + LABEL_H * 0.75);
+
+            // Draw both cards
+            ctx.drawImage(frontCanvas, PAD,                       PAD + LABEL_H);
+            ctx.drawImage(backCanvas,  PAD + CARD_W + GAP,        PAD + LABEL_H);
+
             const safeName = formData.fullName.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'employee';
+            const link = document.createElement('a');
+            link.download = `${safeName}_id_card.png`;
+            link.href = combined.toDataURL('image/png');
+            link.click();
 
-            const frontLink = document.createElement('a');
-            frontLink.download = `${safeName}_front.png`;
-            frontLink.href = frontCanvas.toDataURL('image/png');
-            frontLink.click();
-
-            setTimeout(() => {
-                const backLink = document.createElement('a');
-                backLink.download = `${safeName}_back.png`;
-                backLink.href = backCanvas.toDataURL('image/png');
-                backLink.click();
-
-                hideLoader();
-                triggerToast('Badge Prints Generated!', 'Check your downloads folder for print-ready front and back PNG cards.', 'success', 5000);
-            }, 800);
+            hideLoader();
+            triggerToast('ID Card Downloaded!', 'Front & back combined into one print-ready image.', 'success', 5000);
 
         } catch (error) {
             hideLoader();
