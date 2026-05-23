@@ -35,6 +35,10 @@ function App() {
 
     const [activeTab, setActiveTab] = useState('form-section');
     const [isFlipped, setIsFlipped] = useState(false);
+    const [savedRecords, setSavedRecords] = useState(() => {
+        try { return JSON.parse(localStorage.getItem('hox_records') || '[]'); }
+        catch { return []; }
+    });
     
     // Notification & Loader state
     const [toast, setToast] = useState({ show: false, title: '', body: '', type: 'success' });
@@ -190,6 +194,29 @@ _"${source.backContent}"_
             dispatchWhatsApp(payload);
         }
 
+        // Save to local Records vault
+        const record = {
+            id: Date.now(),
+            fullName: formData.fullName,
+            designation: formData.designation,
+            department: formData.department,
+            bloodGroup: formData.bloodGroup,
+            validUntil: formData.validUntil,
+            mobileNo: formData.mobileNo,
+            emergencyContact: formData.emergencyContact,
+            companyEmail: formData.companyEmail,
+            backContent: formData.backContent,
+            photoBase64: formData.photoBase64,
+            signatureBase64: formData.signatureBase64,
+            activeTheme: formData.activeTheme,
+            timestamp: new Date().toISOString()
+        };
+        setSavedRecords(prev => {
+            const updated = [record, ...prev].slice(0, 50); // keep last 50
+            localStorage.setItem('hox_records', JSON.stringify(updated));
+            return updated;
+        });
+
         // Reset employee-specific fields for the next entry
         setFormData(prev => ({
             ...prev,
@@ -311,6 +338,12 @@ _"${source.backContent}"_
                             </svg>
                             Photo & Signature
                         </button>
+                        <button type="button" className={`tab-btn ${activeTab === 'vault-section' ? 'active' : ''}`} onClick={() => { setActiveTab('vault-section'); setIsFlipped(false); }}>
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                            Records {savedRecords.length > 0 && <span style={{ background: 'var(--theme-gradient)', color: '#fff', borderRadius: '10px', fontSize: '0.65rem', padding: '1px 6px', marginLeft: '2px' }}>{savedRecords.length}</span>}
+                        </button>
                     </nav>
 
                     {/* Forms */}
@@ -333,6 +366,65 @@ _"${source.backContent}"_
                             />
                         )}
                     </form>
+
+                    {/* Records Vault */}
+                    {activeTab === 'vault-section' && (
+                        <div id="vault-section" className="tab-content active">
+                            {savedRecords.length === 0 ? (
+                                <div className="vault-empty">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                                    <p>No records yet. Submit a card to see it listed here.</p>
+                                </div>
+                            ) : (
+                                <>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{savedRecords.length} record{savedRecords.length !== 1 ? 's' : ''} saved locally</p>
+                                        <button className="btn btn-secondary btn-sm btn-danger" onClick={() => { if (window.confirm('Clear all records?')) { setSavedRecords([]); localStorage.removeItem('hox_records'); } }}>Clear All</button>
+                                    </div>
+                                    <div className="vault-grid">
+                                        {savedRecords.map(rec => {
+                                            const d = new Date(rec.timestamp);
+                                            const dateStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+                                            return (
+                                                <div key={rec.id} className="vault-item">
+                                                    <div className="vault-info">
+                                                        {rec.photoBase64
+                                                            ? <img className="vault-avatar" src={rec.photoBase64} alt={rec.fullName} />
+                                                            : <div className="vault-avatar" style={{ background: 'var(--theme-gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '1.1rem' }}>{rec.fullName?.[0] || '?'}</div>
+                                                        }
+                                                        <div className="vault-details">
+                                                            <h5>{rec.fullName || 'Unnamed'}</h5>
+                                                            <p>{rec.designation}{rec.department ? ` · ${rec.department}` : ''}</p>
+                                                            <p style={{ fontSize: '0.7rem', marginTop: '2px', opacity: 0.6 }}>{dateStr}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="vault-actions">
+                                                        <button className="btn btn-secondary btn-sm" title="Load this record" onClick={() => {
+                                                            setFormData(prev => ({ ...prev, ...rec }));
+                                                            setActiveTab('form-section');
+                                                            setIsFlipped(false);
+                                                            triggerToast('Record Loaded', `${rec.fullName}'s details loaded into the form.`, 'success');
+                                                        }}>
+                                                            Load
+                                                        </button>
+                                                        <button className="btn btn-secondary btn-sm btn-danger" title="Delete record" onClick={() => {
+                                                            setSavedRecords(prev => {
+                                                                const updated = prev.filter(r => r.id !== rec.id);
+                                                                localStorage.setItem('hox_records', JSON.stringify(updated));
+                                                                return updated;
+                                                            });
+                                                        }}>
+                                                            <svg style={{ width: '14px', height: '14px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 {/* Right Column 3D Card Viewport */}
