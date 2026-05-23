@@ -1266,6 +1266,17 @@ input:focus + svg, select:focus + svg {
     gap: 0.35rem;
 }
 
+.card-back-section-title {
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--theme-primary, #0e3b4a);
+    letter-spacing: 0.06em;
+    text-align: center;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+}
+
 .card-back-info {
     display: flex;
     flex-direction: column;

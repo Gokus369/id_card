@@ -231,13 +231,14 @@ function CardPreview({ formData, isFlipped, cardFrontRef, cardBackRef }) {
                             </svg>
                             <div className="card-logo-divider"></div>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                                <div className="card-logo-text">EMERGENCY</div>
-                                <div className="card-logo-sub" style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.08em' }}>CONTACT DETAILS</div>
+                                <div className="card-logo-text">HOX INFOTECH</div>
+                                <div className="card-logo-sub">Private Limited</div>
                             </div>
                         </div>
                     </div>
 
                     <div className="card-back-body">
+                        <h4 className="card-back-section-title">Emergency Contact Details</h4>
                         {/* Tabular Icon Row Grid for Emergency Contacts */}
                         <div className="card-back-info">
                             <div className="card-back-row">
