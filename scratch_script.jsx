@@ -791,7 +791,7 @@ const { useState, useEffect, useRef, useMemo } = React;
                 mobileNo: '',
                 emergencyContact: '',
                 companyEmail: 'hoxinfotech.com@gmail.com',
-                backContent: 'This card is the property of Hox Infotech Private Limited. If found, please return to: VO-346, Wework Prestige, Site No. 26, Laskar, Hosur, Adugodi, Bangalore South, Bangalore - 560030, Karnataka.',
+                backContent: 'This card is the property of Hox Infotech Private Limited. If found, please return to the office address listed above or contact the number.',
                 photoBase64: '',
                 signatureBase64: '',
                 activeTheme: 'hox',
