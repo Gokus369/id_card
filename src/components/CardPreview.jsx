@@ -277,6 +277,12 @@ function CardPreview({ formData, isFlipped, cardFrontRef, cardBackRef }) {
                             </div>
                         </div>
 
+                        {/* Company Physical Address Accent Box */}
+                        <div className="card-back-address">
+                            <span className="card-back-address-label">OFFICE ADDRESS</span>
+                            <p className="card-back-address-value">VO-346, WeWork Prestige, Site No. 26, Laskar, Hosur, Adugodi, Bangalore South, Bangalore - 560030, Karnataka</p>
+                        </div>
+
                         {/* Custom Card Terms Card Container with Shield Icon badge */}
                         <div className="card-custom-text" id="cardBackTermsVal">
                             <div className="card-custom-text-shield">

@@ -1230,6 +1230,33 @@ input:focus + svg, select:focus + svg {
     transform: rotateY(180deg);
 }
 
+.card-back-address {
+    margin: 0.35rem 0.2rem;
+    padding: 0.4rem 0.6rem;
+    background: rgba(14, 59, 74, 0.02);
+    border-left: 2.5px solid var(--theme-primary, #0e3b4a);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    text-align: left;
+}
+
+.card-back-address-label {
+    font-family: var(--font-heading);
+    font-size: 0.52rem;
+    font-weight: 800;
+    color: var(--theme-primary, #0e3b4a);
+    letter-spacing: 0.05em;
+}
+
+.card-back-address-value {
+    font-size: 0.54rem;
+    color: #555555;
+    line-height: 1.35;
+    font-weight: 500;
+}
+
 .card-back-body {
     flex: 1;
     display: flex;
