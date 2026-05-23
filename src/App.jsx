@@ -71,6 +71,26 @@ function App() {
             whatsAppPhone: cachedPhone,
             autoWhatsApp: cachedAutoWA
         }));
+
+        // Auto-fetch Sheets records in the background on mount
+        if (activeUrl) {
+            const fetchInitialRecords = async () => {
+                setSheetsLoading(true);
+                try {
+                    const finalUrl = activeUrl.startsWith('http') ? activeUrl : `https://script.google.com/macros/s/${activeUrl}/exec`;
+                    const res = await fetch(finalUrl, { method: 'GET' });
+                    const json = await res.json();
+                    if (json.status === 'success') {
+                        setSheetsRecords(json.records || []);
+                    }
+                } catch (err) {
+                    console.warn('Initial Sheets fetch skipped/failed:', err);
+                } finally {
+                    setSheetsLoading(false);
+                }
+            };
+            fetchInitialRecords();
+        }
     }, []);
 
     // Helper to persist preferences dynamically
@@ -471,9 +491,13 @@ _"${source.backContent}"_
                                                 return (
                                                     <div key={`sheet-${rec.id}`} className="vault-item">
                                                         <div className="vault-info">
-                                                            <div className="vault-avatar" style={{ background: 'var(--theme-gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '1.1rem' }}>
-                                                                {rec.fullName?.[0] || '?'}
-                                                            </div>
+                                                            {rec.photoBase64 ? (
+                                                                <img className="vault-avatar" src={rec.photoBase64} alt={rec.fullName} />
+                                                            ) : (
+                                                                <div className="vault-avatar" style={{ background: 'var(--theme-gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '1.1rem' }}>
+                                                                    {rec.fullName?.[0] || '?'}
+                                                                </div>
+                                                            )}
                                                             <div className="vault-details">
                                                                 <h5>{rec.fullName || 'Unnamed'}</h5>
                                                                 <p>{rec.designation}{rec.department ? ` · ${rec.department}` : ''}</p>
