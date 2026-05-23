@@ -13,10 +13,15 @@ function BackDetails({ formData, setFormData, onBack, onNext }) {
                         <input 
                             type="tel" 
                             id="mobileNo" 
-                            placeholder="e.g. +91 98765 43210" 
+                            placeholder="e.g. 9876543210" 
                             required
+                            maxLength={10}
+                            pattern="[0-9]{10}"
                             value={formData.mobileNo}
-                            onChange={(e) => setFormData(prev => ({ ...prev, mobileNo: e.target.value }))}
+                            onChange={(e) => {
+                                const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                                setFormData(prev => ({ ...prev, mobileNo: val }));
+                            }}
                         />
                     </div>
                 </div>
@@ -30,10 +35,15 @@ function BackDetails({ formData, setFormData, onBack, onNext }) {
                         <input 
                             type="tel" 
                             id="emergencyContact" 
-                            placeholder="e.g. +91 98765 55555" 
+                            placeholder="e.g. 9876555555" 
                             required
+                            maxLength={10}
+                            pattern="[0-9]{10}"
                             value={formData.emergencyContact}
-                            onChange={(e) => setFormData(prev => ({ ...prev, emergencyContact: e.target.value }))}
+                            onChange={(e) => {
+                                const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                                setFormData(prev => ({ ...prev, emergencyContact: val }));
+                            }}
                         />
                     </div>
                 </div>
