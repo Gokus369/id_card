@@ -250,16 +250,40 @@ _"${source.backContent}"_
                 throw new Error("Card references not loaded in DOM.");
             }
 
-            // Set scale high for clean physical PVC printers
-            const config = {
+            // Helper to strip all 3D CSS transforms from the cloned document
+            // This prevents html2canvas from rendering mirrored/flipped output
+            const stripTransforms = (clonedDoc) => {
+                const ids = ['cardScene', 'cardViewport', 'cardFrontCanvasSource', 'cardBackCanvasSource'];
+                ids.forEach(id => {
+                    const el = clonedDoc.getElementById(id);
+                    if (el) {
+                        el.style.transform = 'none';
+                        el.style.transformStyle = 'flat';
+                        el.style.perspective = 'none';
+                        el.style.backfaceVisibility = 'visible';
+                        el.style.webkitBackfaceVisibility = 'visible';
+                    }
+                });
+            };
+
+            const frontConfig = {
                 scale: 3,
                 useCORS: true,
                 backgroundColor: null,
-                logging: false
+                logging: false,
+                onclone: stripTransforms
             };
 
-            const frontCanvas = await html2canvas(frontCard, config);
-            const backCanvas = await html2canvas(backCard, config);
+            const backConfig = {
+                scale: 3,
+                useCORS: true,
+                backgroundColor: null,
+                logging: false,
+                onclone: stripTransforms
+            };
+
+            const frontCanvas = await html2canvas(frontCard, frontConfig);
+            const backCanvas = await html2canvas(backCard, backConfig);
 
             const safeName = formData.fullName.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'employee';
             
