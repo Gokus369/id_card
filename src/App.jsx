@@ -23,7 +23,7 @@ function App() {
         validUntil: `${new Date().getFullYear()}-12-31`,
         mobileNo: '',
         emergencyContact: '',
-        companyEmail: 'hoxinfotech.in@gmail.com',
+        companyEmail: 'hoxinfotech.com@gmail.com',
         backContent: 'This card is the property of Hox Infotech Private Limited. If found, please return to the office address listed above.',
         photoBase64: '',
         signatureBase64: '',

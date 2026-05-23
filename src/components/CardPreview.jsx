@@ -264,7 +264,7 @@ function CardPreview({ formData, isFlipped, cardFrontRef, cardBackRef }) {
                                     <span className="card-info-label">Company Email</span>
                                 </div>
                                 <span className="card-info-divider">|</span>
-                                <span className="card-back-val" id="cardEmailVal">{formData.companyEmail || 'hoxinfotech.in@gmail.com'}</span>
+                                <span className="card-back-val" id="cardEmailVal">{formData.companyEmail || 'hoxinfotech.com@gmail.com'}</span>
                             </div>
 
                             <div className="card-back-row">

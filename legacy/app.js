@@ -19,7 +19,7 @@ function App() {
         validUntil: `${new Date().getFullYear()}-12-31`,
         mobileNo: '',
         emergencyContact: '',
-        companyEmail: 'hoxinfotech.in@gmail.com',
+        companyEmail: 'hoxinfotech.com@gmail.com',
         backContent: 'This card is the property of Hox Infotech Private Limited. If found, please return to the office address listed above.',
         photoBase64: '',
         signatureBase64: '',
@@ -1095,7 +1095,7 @@ function CardPreview({ formData, isFlipped }) {
                             </div>
                             <div className="card-back-row">
                                 <span className="card-back-label">Company Email</span>
-                                <span className="card-back-val" id="cardEmailVal">{formData.companyEmail || 'hoxinfotech.in@gmail.com'}</span>
+                                <span className="card-back-val" id="cardEmailVal">{formData.companyEmail || 'hoxinfotech.com@gmail.com'}</span>
                             </div>
 
                             <div className="card-back-row" style={{ marginTop: '2px' }}>
