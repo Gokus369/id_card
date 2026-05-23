@@ -894,9 +894,6 @@ function VaultDrawer({ vault, onLoad, onShare, onDelete, onClear }) {
         <div id="vault-section" className="tab-content active">
             <div className="vault-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Saved ID Cards Drawer</h4>
-                {vault.length > 0 && (
-                    <button type="button" className="btn btn-danger btn-sm" onClick={onClear}>Clear Vault</button>
-                )}
             </div>
 
             {vault.length === 0 ? (
@@ -921,14 +918,11 @@ function VaultDrawer({ vault, onLoad, onShare, onDelete, onClear }) {
                                 </div>
                             </div>
                             <div className="vault-actions">
-                                <button type="button" className="btn btn-secondary btn-sm" onClick={() => onLoad(item)} title="Load card parameters back into preview container">
-                                    Load
+                                <button type="button" className="btn btn-secondary btn-sm" onClick={() => onLoad(item)} title="Load card parameters back into preview container for editing">
+                                    Edit
                                 </button>
                                 <button type="button" className="btn btn-secondary btn-sm" style={{ borderColor: '#25d366', color: '#25d366', background: 'rgba(37, 211, 102, 0.05)' }} onClick={() => onShare(item)} title="Share details of this employee on WhatsApp">
                                     WhatsApp
-                                </button>
-                                <button type="button" className="btn btn-danger btn-sm" onClick={() => onDelete(index, item.fullName)} title="Delete record from local machine">
-                                    Delete
                                 </button>
                             </div>
                         </div>

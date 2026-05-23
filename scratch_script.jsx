@@ -547,9 +547,6 @@ const { useState, useEffect, useRef, useMemo } = React;
                 <div className="tab-content active">
                     <div className="vault-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                         <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem' }}>Saved ID Cards Drawer</h4>
-                        {vault.length > 0 && (
-                            <button type="button" className="btn btn-danger btn-sm" onClick={onClear}>Clear Vault</button>
-                        )}
                     </div>
                     
                     {vault.length === 0 ? (
@@ -575,13 +572,10 @@ const { useState, useEffect, useRef, useMemo } = React;
                                     </div>
                                     <div className="vault-actions">
                                         <button type="button" className="btn btn-secondary btn-sm" onClick={() => onLoad(item)}>
-                                            Load
+                                            Edit
                                         </button>
                                         <button type="button" className="btn btn-secondary btn-sm" style={{ borderColor: '#25d366', color: '#25d366', background: 'rgba(37, 211, 102, 0.05)' }} onClick={() => onShare(item)}>
                                             WhatsApp
-                                        </button>
-                                        <button type="button" className="btn btn-danger btn-sm" onClick={() => onDelete(index, item.fullName)}>
-                                            Delete
                                         </button>
                                     </div>
                                 </div>

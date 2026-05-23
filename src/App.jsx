@@ -550,8 +550,8 @@ _"${source.backContent}"_
                                                                 setFormData(prev => ({ ...prev, ...rec }));
                                                                 setActiveTab('form-section');
                                                                 setIsFlipped(false);
-                                                                triggerToast('Record Loaded', `${rec.fullName}'s details loaded into the form.`, 'success');
-                                                            }}>Load</button>
+                                                                triggerToast('Ready to Edit', `${rec.fullName}'s details populated for editing.`, 'success');
+                                                            }}>Edit</button>
                                                         </div>
                                                     </div>
                                                 );
@@ -565,7 +565,6 @@ _"${source.backContent}"_
                             <div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
                                     <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>📱 This Device Only</p>
-                                    {savedRecords.length > 0 && <button className="btn btn-secondary btn-sm btn-danger" onClick={() => { if (window.confirm('Clear all local records?')) { setSavedRecords([]); localStorage.removeItem('hox_records'); } }}>Clear All</button>}
                                 </div>
                                 {savedRecords.length === 0 ? (
                                     <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>No local records. Submit a card to save one here.</p>
@@ -592,17 +591,8 @@ _"${source.backContent}"_
                                                             setFormData(prev => ({ ...prev, ...rec }));
                                                             setActiveTab('form-section');
                                                             setIsFlipped(false);
-                                                            triggerToast('Record Loaded', `${rec.fullName}'s details loaded into the form.`, 'success');
-                                                        }}>Load</button>
-                                                        <button className="btn btn-secondary btn-sm btn-danger" onClick={() => {
-                                                            setSavedRecords(prev => {
-                                                                const updated = prev.filter(r => r.id !== rec.id);
-                                                                localStorage.setItem('hox_records', JSON.stringify(updated));
-                                                                return updated;
-                                                            });
-                                                        }}>
-                                                            <svg style={{ width: '14px', height: '14px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                                        </button>
+                                                            triggerToast('Ready to Edit', `${rec.fullName}'s details populated for editing.`, 'success');
+                                                        }}>Edit</button>
                                                     </div>
                                                 </div>
                                             );
