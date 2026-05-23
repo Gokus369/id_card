@@ -204,7 +204,7 @@ function CardPreview({ formData, isFlipped, cardFrontRef, cardBackRef }) {
                     
                     {/* Curved footer tab with website URL */}
                     <div className="card-footer-tab">
-                        <span className="card-footer-url">www.hoxinfotech.in</span>
+                        <span className="card-footer-url">www.hoxinfotech.com</span>
                     </div>
                 </div>
 
@@ -309,7 +309,7 @@ function CardPreview({ formData, isFlipped, cardFrontRef, cardBackRef }) {
 
                     {/* Curved footer tab with website URL */}
                     <div className="card-footer-tab">
-                        <span className="card-footer-url">www.hoxinfotech.in</span>
+                        <span className="card-footer-url">www.hoxinfotech.com</span>
                     </div>
                 </div>
 
