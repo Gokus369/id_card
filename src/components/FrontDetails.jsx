@@ -113,7 +113,7 @@ function FrontDetails({ formData, setFormData, onNext }) {
                         <input 
                             type="text" 
                             id="employeeId" 
-                            placeholder="e.g. HXL12345" 
+                            placeholder="e.g. HIT-012" 
                             required 
                             value={formData.employeeId}
                             onChange={(e) => setFormData(prev => ({ ...prev, employeeId: e.target.value }))}

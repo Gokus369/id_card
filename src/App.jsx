@@ -28,7 +28,7 @@ function App() {
         photoBase64: '',
         signatureBase64: '',
         activeTheme: 'hox',
-        employeeId: 'HXL12345',
+        employeeId: 'HIT-012',
         joiningDate: `${new Date().getFullYear()}-01-01`,
         googleSheetsUrl: '', // loaded in useEffect
         whatsAppPhone: '',   // loaded in useEffect
@@ -129,7 +129,7 @@ function App() {
 
         allRecords.forEach(rec => {
             const empId = rec.employeeId || '';
-            const match = empId.match(/HXL(\d+)/i);
+            const match = empId.match(/HIT-(\d+)/i);
             if (match) {
                 const num = parseInt(match[1], 10);
                 if (!isNaN(num) && num > maxNum) {
@@ -139,13 +139,13 @@ function App() {
         });
 
         const nextNum = maxNum + 1;
-        const paddedNum = String(nextNum).padStart(5, '0');
-        return `HXL${paddedNum}`;
+        const paddedNum = String(nextNum).padStart(3, '0');
+        return `HIT-${paddedNum}`;
     }, [savedRecords, sheetsRecords]);
 
     useEffect(() => {
         // Automatically prefill next ID if current ID is initial default or empty
-        if (formData.employeeId === 'HXL12345' || !formData.employeeId) {
+        if (formData.employeeId === 'HIT-012' || formData.employeeId === 'HXL12345' || !formData.employeeId) {
             setFormData(prev => {
                 if (prev.employeeId !== nextEmployeeId) {
                     return { ...prev, employeeId: nextEmployeeId };
@@ -307,7 +307,7 @@ _"${source.backContent}"_
             emergencyContact: '',
             photoBase64: '',
             signatureBase64: '',
-            employeeId: 'HXL12345',
+            employeeId: 'HIT-012',
             joiningDate: `${new Date().getFullYear()}-01-01`
         }));
         setActiveTab('form-section');

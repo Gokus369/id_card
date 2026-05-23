@@ -161,7 +161,7 @@ function CardPreview({ formData, isFlipped, cardFrontRef, cardBackRef }) {
                                     <span className="card-info-label">Employee ID</span>
                                 </div>
                                 <span className="card-info-divider">|</span>
-                                <span className="card-info-val" id="cardEmpIdVal">{formData.employeeId || 'HXL12345'}</span>
+                                <span className="card-info-val" id="cardEmpIdVal">{formData.employeeId || 'HIT-012'}</span>
                             </div>
 
                             <div className="card-info-row">
