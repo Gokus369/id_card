@@ -24,6 +24,7 @@ Your portal is fully configured out-of-the-box to sync dynamic employee submissi
 *   **Vector Dynamic QR Code**: Real-time vector-backed validation code generated dynamically on each keypress (fails over gracefully to a native inline vector barcode if offline).
 *   **High-Fidelity Canvas Signature Grid**: Smooth canvas board that captures professional digital pen strokes, converting them instantly to a transparent Base64 payload.
 *   **Real-Time Google Sheets Gateway**: Secure cross-origin POST pipeline sending core fields, profiles, and signatures straight to Google Drive.
+*   **Cross-Device Sheets Sync**: Seamlessly sync and fetch existing records directly from Google Sheets onto any device (including mobile) using a single deployed Apps Script.
 *   **Local Browser History Drawer (Vault)**: Persists up to dozens of local cards on device using standard JSON arrays in `localStorage`, letting you re-load card layouts back into memory instantly.
 *   **Admin WhatsApp Dispatcher**: Fully automated or manual formatting of employee text templates directly into target WhatsApp threads.
 *   **HD Print Stylesheets**: Print-optimized viewport overrides to strip editing drawers and render print-ready margins suitable for physical PVC printer laminations.
