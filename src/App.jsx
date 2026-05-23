@@ -10,7 +10,7 @@ import CardPreview from './components/CardPreview';
 import LoaderModal from './components/LoaderModal';
 import ToastNotification from './components/ToastNotification';
 
-const defaultSheetsUrl = 'https://script.google.com/macros/s/AKfycbyzqdodHusON2N9eH5W-XSISZmMUNfXXjkHPbzd6mx_nirflvSIVZT-6UN80R7jgpLs0w/exec';
+const defaultSheetsUrl = 'https://script.google.com/macros/s/AKfycby4zN1z6ZDyq_91zaBuMGmcyvTlNax6fSnTRmGaEd7LJfuTgWdYfHnB-ykClX1bqVZcgQ/exec';
 const defaultWhatsAppPhone = '9995550353';
 
 function App() {
@@ -59,7 +59,7 @@ function App() {
         // Run migration block for old/hijacked URLs
         const cachedUrl = localStorage.getItem('hox_sheets_url');
         let activeUrl = cachedUrl;
-        if (!cachedUrl || cachedUrl.includes('AKfycbwImI') || cachedUrl.includes('AKfycbwlml') || cachedUrl.includes('AKfycbx') || cachedUrl.includes('AKfycby')) {
+        if (!cachedUrl || cachedUrl.includes('AKfycbwImI') || cachedUrl.includes('AKfycbwlml') || cachedUrl.includes('AKfycbx') || cachedUrl.includes('AKfycbyzqdodHusON')) {
             activeUrl = defaultSheetsUrl;
             localStorage.setItem('hox_sheets_url', defaultSheetsUrl);
         }
