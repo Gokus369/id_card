@@ -241,65 +241,80 @@ _"${source.backContent}"_
         }
 
         showLoader('Preparing Printable Snapshots...', 'Generating ultra-sharp, high-definition front & back card prints. Please hold...');
-        
+
+        // Captures a card element cleanly by cloning it into an isolated
+        // off-screen container — no 3D transforms, exact card dimensions.
+        const captureCard = async (cardElement) => {
+            const CARD_W = 320;
+            const CARD_H = 506;
+
+            const container = document.createElement('div');
+            container.style.cssText = `
+                position: fixed;
+                top: -9999px;
+                left: -9999px;
+                width: ${CARD_W}px;
+                height: ${CARD_H}px;
+                overflow: hidden;
+                pointer-events: none;
+                z-index: -1;
+            `;
+
+            const clone = cardElement.cloneNode(true);
+            clone.style.cssText = `
+                position: absolute;
+                top: 0; left: 0;
+                width: ${CARD_W}px;
+                height: ${CARD_H}px;
+                transform: none !important;
+                transform-style: flat !important;
+                backface-visibility: visible !important;
+                -webkit-backface-visibility: visible !important;
+                border-radius: 18px;
+                overflow: hidden;
+            `;
+
+            container.appendChild(clone);
+            document.body.appendChild(container);
+
+            try {
+                return await html2canvas(container, {
+                    scale: 3,
+                    useCORS: true,
+                    backgroundColor: null,
+                    logging: false,
+                    width: CARD_W,
+                    height: CARD_H
+                });
+            } finally {
+                document.body.removeChild(container);
+            }
+        };
+
         try {
             const frontCard = cardFrontRef.current;
             const backCard = cardBackRef.current;
-            
-            if (!frontCard || !backCard) {
-                throw new Error("Card references not loaded in DOM.");
-            }
 
-            // Helper to strip all 3D CSS transforms from the cloned document
-            // This prevents html2canvas from rendering mirrored/flipped output
-            const stripTransforms = (clonedDoc) => {
-                const ids = ['cardScene', 'cardViewport', 'cardFrontCanvasSource', 'cardBackCanvasSource'];
-                ids.forEach(id => {
-                    const el = clonedDoc.getElementById(id);
-                    if (el) {
-                        el.style.transform = 'none';
-                        el.style.transformStyle = 'flat';
-                        el.style.perspective = 'none';
-                        el.style.backfaceVisibility = 'visible';
-                        el.style.webkitBackfaceVisibility = 'visible';
-                    }
-                });
-            };
+            if (!frontCard || !backCard) throw new Error('Card references not loaded in DOM.');
 
-            const frontConfig = {
-                scale: 3,
-                useCORS: true,
-                backgroundColor: null,
-                logging: false,
-                onclone: stripTransforms
-            };
-
-            const backConfig = {
-                scale: 3,
-                useCORS: true,
-                backgroundColor: null,
-                logging: false,
-                onclone: stripTransforms
-            };
-
-            const frontCanvas = await html2canvas(frontCard, frontConfig);
-            const backCanvas = await html2canvas(backCard, backConfig);
+            const [frontCanvas, backCanvas] = await Promise.all([
+                captureCard(frontCard),
+                captureCard(backCard)
+            ]);
 
             const safeName = formData.fullName.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'employee';
-            
-            // Front Card download
+
             const frontLink = document.createElement('a');
             frontLink.download = `${safeName}_front.png`;
             frontLink.href = frontCanvas.toDataURL('image/png');
             frontLink.click();
 
-            // Small delay to ensure browser handles secondary downloads gracefully
             setTimeout(() => {
                 const backLink = document.createElement('a');
                 backLink.download = `${safeName}_back.png`;
                 backLink.href = backCanvas.toDataURL('image/png');
                 backLink.click();
-                
+
                 hideLoader();
                 triggerToast('Badge Prints Generated!', 'Check your downloads folder for print-ready front and back PNG cards.', 'success', 5000);
             }, 800);
