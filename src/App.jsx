@@ -10,7 +10,7 @@ import CardPreview from './components/CardPreview';
 import LoaderModal from './components/LoaderModal';
 import ToastNotification from './components/ToastNotification';
 
-const defaultSheetsUrl = 'https://script.google.com/macros/s/AKfycbwQnpvCxDXNTM84H3t09nTUpCI4mrSEM__6ihfKJ2dcHzQRvr6WUNRkQnxDYEQKaE6Xwg/exec';
+const defaultSheetsUrl = 'https://script.google.com/macros/s/AKfycbyzqdodHusON2N9eH5W-XSISZmMUNfXXjkHPbzd6mx_nirflvSIVZT-6UN80R7jgpLs0w/exec';
 const defaultWhatsAppPhone = '9995550353';
 
 function App() {
