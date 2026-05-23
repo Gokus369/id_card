@@ -497,6 +497,7 @@ input:focus + svg, select:focus + svg {
     width: 100%;
     height: 100%;
     cursor: crosshair;
+    touch-action: none;
 }
 
 .canvas-controls {
@@ -908,62 +909,70 @@ input:focus + svg, select:focus + svg {
     z-index: 20;
 }
 
-/* Premium Geometric Straight Header */
+/* Premium Overlapping Waves Header Style */
 .card-header {
-    height: 105px;
-    background: var(--theme-gradient);
+    height: 120px;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 12px;
+    padding-top: 15px;
     z-index: 3;
     overflow: hidden;
-    border-bottom: 2px solid var(--theme-secondary, #e6e2dd);
 }
 
-.card-header::before {
-    display: none;
+.card-header-waves {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
-@keyframes cardHeaderShine {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-
-.card-header::after {
-    display: none; /* Remove retro arched dome */
+.card-header-waves svg {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 .card-logo {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.6rem;
     z-index: 2;
 }
 
+.card-logo-divider {
+    width: 1.5px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.35);
+    align-self: center;
+}
+
 .card-logo svg {
-    width: 24px;
-    height: 24px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    width: 26px;
+    height: 26px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
 }
 
 .card-logo-text {
     font-family: var(--font-heading);
     font-weight: 800;
-    font-size: 0.95rem;
-    letter-spacing: -0.015em;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
     color: #ffffff;
+    line-height: 1;
 }
 
 .card-logo-sub {
-    font-size: 0.5rem;
+    font-size: 0.52rem;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: rgba(255, 255, 255, 0.8);
-    margin-top: 1px;
-    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 3px;
+    font-weight: 600;
 }
 
 /* Card body core */
@@ -972,24 +981,24 @@ input:focus + svg, select:focus + svg {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1.25rem 1.25rem;
+    padding: 0.75rem 1.25rem;
     position: relative;
     z-index: 2;
-    gap: 0.6rem;
+    gap: 0.4rem;
 }
 
-/* Clean Standard Corporate Avatar Photo Shell */
+/* Premium White Card Avatar Photo Shell */
 .card-avatar-container {
-    width: 115px;
-    height: 115px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     padding: 3px;
     background: #ffffff;
-    border: 3px solid var(--theme-primary, #0e3b4a);
-    box-shadow: 0 4px 12px rgba(14, 59, 74, 0.12);
+    border: 3.5px solid var(--theme-primary, #0e3b4a);
+    box-shadow: 0 6px 16px rgba(14, 59, 74, 0.12);
     position: relative;
-    margin-top: 0.5rem; /* Clean positive margin, no header overlap! */
-    margin-bottom: 0.85rem;
+    margin-top: -15px; /* Pull slightly into the header wave */
+    margin-bottom: 0.35rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -998,16 +1007,8 @@ input:focus + svg, select:focus + svg {
 }
 
 .card-scene:hover .card-avatar-container {
-    transform: scale(1.02);
-    box-shadow: 0 6px 18px rgba(14, 59, 74, 0.18);
-}
-
-.card-avatar-container::before {
-    display: none;
-}
-
-.card-avatar-container::after {
-    display: none;
+    transform: scale(1.03);
+    box-shadow: 0 8px 22px rgba(14, 59, 74, 0.18);
 }
 
 .card-photo {
@@ -1015,7 +1016,7 @@ input:focus + svg, select:focus + svg {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    background: #111827;
+    background: #e2e8f0;
     z-index: 3;
 }
 
@@ -1034,14 +1035,14 @@ input:focus + svg, select:focus + svg {
 }
 
 .avatar-placeholder svg {
-    width: 32px;
-    height: 32px;
-    margin-bottom: 2px;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 1px;
     color: var(--theme-primary, rgba(14, 59, 74, 0.3));
 }
 
 .avatar-placeholder span {
-    font-size: 0.6rem;
+    font-size: 0.55rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -1053,16 +1054,6 @@ input:focus + svg, select:focus + svg {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin-bottom: 0.25rem;
-}
-
-.card-label-small {
-    font-size: 0.52rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--text-muted, #6f858e);
-    font-weight: 700;
-    margin-bottom: 1px;
 }
 
 .card-name {
@@ -1071,99 +1062,141 @@ input:focus + svg, select:focus + svg {
     font-weight: 800;
     color: var(--card-text-primary, #0e3b4a);
     text-align: center;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     text-transform: uppercase;
-    margin-top: 2px;
-    line-height: 1.2;
+    margin-top: 1px;
+    line-height: 1.1;
 }
 
 .card-title {
     font-family: var(--font-heading);
-    font-size: 0.72rem;
-    font-weight: 700;
+    font-size: 0.65rem;
+    font-weight: 800;
     color: #ffffff;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-align: center;
     background: var(--theme-primary, #0e3b4a);
-    padding: 5px 16px;
-    border-radius: 12px;
+    padding: 4px 15px;
+    border-radius: 20px;
     margin-top: 4px;
     display: inline-block;
-    box-shadow: 0 2px 6px rgba(14, 59, 74, 0.12);
+    box-shadow: 0 3px 8px rgba(14, 59, 74, 0.15);
 }
 
-/* Minimal Tabular Grid layout for employee details */
+/* Sleek Body Separator */
+.card-body-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0.35rem 0;
+    gap: 0.5rem;
+}
+
+.card-body-separator-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(14, 59, 74, 0.12);
+}
+
+.card-body-separator-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--theme-primary, #0e3b4a);
+}
+
+/* Circular Icon rows layout for details */
 .card-info-table {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 0;
-    border-top: none;
-    padding-top: 0.4rem;
-    margin-top: auto;
-    margin-bottom: 0.25rem;
+    gap: 0.35rem;
+    margin-top: 0.2rem;
 }
 
 .card-info-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 0.65rem 0.4rem;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid rgba(14, 59, 74, 0.18);
-    border-radius: 0;
-    transition: all var(--transition-fast);
-    position: relative;
-    overflow: hidden;
-}
-
-.card-info-row::before {
-    display: none; /* Remove retro alert-style vertical left bar */
+    justify-content: space-between;
+    padding: 0.25rem 0.2rem;
+    transition: transform var(--transition-fast);
 }
 
 .card-info-row:hover {
-    background: rgba(14, 59, 74, 0.025);
-    border-color: rgba(14, 59, 74, 0.15);
-    transform: translateX(2px);
+    transform: translateX(3px);
 }
 
-.card-info-row:last-child {
-    border-bottom: none;
+.card-info-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 105px;
+    flex-shrink: 0;
+}
+
+.card-info-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--theme-primary, #0e3b4a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(14, 59, 74, 0.15);
+}
+
+.card-info-icon svg {
+    width: 11px;
+    height: 11px;
 }
 
 .card-info-label {
-    color: var(--text-secondary, #3b5b66);
+    color: #555555;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.62rem;
-    letter-spacing: 0.04em;
+    font-size: 0.6rem;
+    letter-spacing: 0.02em;
+}
+
+.card-info-divider {
+    color: rgba(14, 59, 74, 0.2);
+    font-size: 0.75rem;
+    font-weight: 300;
 }
 
 .card-info-val {
-    color: var(--card-text-primary, #0e3b4a);
+    color: var(--theme-primary, #0e3b4a);
     font-weight: 700;
     font-size: 0.72rem;
+    flex: 1;
+    padding-left: 0.75rem;
+    text-align: left;
 }
 
-/* Badge overlay */
-.card-badge {
-    background: var(--theme-primary, #0e3b4a);
-    color: var(--theme-secondary, #e6e2dd);
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-/* Bottom card strip overlay */
-.card-footer {
-    height: 12px;
-    background: var(--theme-gradient);
+/* Curved Rising Footer Tab */
+.card-footer-tab {
+    margin-top: auto;
     width: 100%;
+    height: 28px;
+    background: var(--theme-primary, #0e3b4a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    position: relative;
+    z-index: 10;
+}
+
+.card-footer-url {
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.08em;
 }
 
 /* CARD BACKSIDE DESIGN */
@@ -1177,157 +1210,137 @@ input:focus + svg, select:focus + svg {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 1.75rem 1.25rem 1.25rem 1.25rem;
+    padding: 1rem 1.25rem 0.5rem 1.25rem;
     z-index: 2;
-}
-
-.card-back-title {
-    font-family: var(--font-heading);
-    font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-align: center;
-    color: var(--card-text-primary, #0e3b4a);
-    margin-bottom: 0.85rem;
-    border-bottom: 2px solid var(--theme-secondary, #e6e2dd);
-    padding-bottom: 0.4rem;
+    gap: 0.35rem;
 }
 
 .card-back-info {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    margin-bottom: 0.75rem;
+    gap: 0.4rem;
 }
 
 .card-back-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 0.7rem 0.5rem;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid rgba(14, 59, 74, 0.18);
-    border-radius: 0;
-    font-size: 0.72rem;
-    position: relative;
-    overflow: hidden;
-    transition: all var(--transition-fast);
-}
-
-.card-back-row::before {
-    display: none; /* Remove alert-style vertical left bar */
+    justify-content: space-between;
+    padding: 0.25rem 0.2rem;
+    transition: transform var(--transition-fast);
 }
 
 .card-back-row:hover {
-    background: rgba(14, 59, 74, 0.025);
-    border-color: rgba(14, 59, 74, 0.15);
-    transform: translateX(2px);
-}
-
-.card-back-row:last-child {
-    border-bottom: none;
-}
-
-.card-back-label {
-    color: var(--text-secondary, #3b5b66);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.62rem;
-    letter-spacing: 0.04em;
+    transform: translateX(3px);
 }
 
 .card-back-val {
-    color: var(--card-text-primary, #0e3b4a);
+    color: var(--theme-primary, #0e3b4a);
     font-weight: 700;
-    word-break: break-all;
-    text-align: right;
+    font-size: 0.72rem;
+    flex: 1;
+    padding-left: 0.75rem;
+    text-align: left;
 }
 
+/* Modern Card Terms Box with Shield Badge */
 .card-custom-text {
-    font-size: 0.6rem;
-    color: var(--card-text-primary, #0e3b4a);
+    font-size: 0.58rem;
+    color: var(--theme-primary, #0e3b4a);
     line-height: 1.45;
-    background: rgba(14, 59, 74, 0.04);
-    border: 1px solid rgba(14, 59, 74, 0.18);
-    border-radius: 6px;
-    padding: 0.5rem 0.75rem;
-    margin-top: auto;
-    margin-bottom: auto;
-    font-style: italic;
+    background: rgba(14, 59, 74, 0.03);
+    border: 1px solid rgba(14, 59, 74, 0.1);
+    border-radius: 10px;
+    padding: 0.6rem 0.8rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-style: normal;
     text-align: center;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.01);
+    position: relative;
 }
 
-/* Back Sign & Code Row */
+.card-custom-text-shield {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1.5px solid rgba(14, 59, 74, 0.12);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: -18px auto 0.25rem auto;
+    z-index: 2;
+}
+
+/* Side by side layout for back signature & QR */
 .card-bottom-row {
     display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 0.75rem;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 1rem;
     align-items: flex-end;
-    margin-top: 1rem;
-    border-top: 1px solid rgba(14, 59, 74, 0.18);
-    padding-top: 0.75rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(14, 59, 74, 0.1);
+    margin-bottom: 0.25rem;
 }
 
-/* Authorized Signature inside ID Card */
-.card-signature-wrapper {
+/* Authorized Signature and Scan labels inside card bottom */
+.card-signature-wrapper, .card-qrcode-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
     align-items: center;
+    gap: 0.25rem;
+    width: 100%;
 }
 
 .card-signature-box {
     width: 100%;
     height: 48px;
     background-color: #ffffff;
-    border: 1px solid rgba(14, 59, 74, 0.15);
+    border: 1px solid rgba(14, 59, 74, 0.12);
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     position: relative;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
 }
 
 .card-signature-img {
     max-width: 90%;
     max-height: 85%;
     object-fit: contain;
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
 }
 
 .card-signature-placeholder {
-    font-size: 0.55rem;
-    color: var(--text-muted, #6f858e);
-    text-transform: uppercase;
-    font-weight: 500;
-}
-
-.card-signature-title {
-    font-size: 0.55rem;
+    font-size: 0.5rem;
     color: var(--text-muted, #6f858e);
     text-transform: uppercase;
     font-weight: 600;
-    letter-spacing: 0.05em;
 }
 
-/* SVG QR code box on ID Card */
 .card-qrcode-box {
-    width: 68px;
-    height: 68px;
+    width: 60px;
+    height: 60px;
     background: #ffffff;
-    padding: 5px;
+    padding: 3px;
     border-radius: 6px;
-    border: 1px solid #e6e2dd;
-    box-shadow: 0 2px 8px rgba(14, 59, 74, 0.06);
+    border: 1px solid rgba(14, 59, 74, 0.12);
+    box-shadow: 0 2px 6px rgba(14, 59, 74, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
+}
+
+.card-signature-title, .card-qrcode-title {
+    font-size: 0.52rem;
+    color: var(--text-muted, #6f858e);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-align: center;
+    margin-top: 1px;
 }
 
 .card-qrcode-box svg {

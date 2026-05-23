@@ -28,6 +28,8 @@ function App() {
         photoBase64: '',
         signatureBase64: '',
         activeTheme: 'hox',
+        employeeId: 'HXL12345',
+        joiningDate: `${new Date().getFullYear()}-01-01`,
         googleSheetsUrl: '', // loaded in useEffect
         whatsAppPhone: '',   // loaded in useEffect
         autoWhatsApp: false  // loaded in useEffect
@@ -202,6 +204,8 @@ _"${source.backContent}"_
             photoBase64: formData.photoBase64,
             signatureBase64: formData.signatureBase64,
             theme: formData.activeTheme,
+            employeeId: formData.employeeId,
+            joiningDate: formData.joiningDate,
             timestamp: new Date().toISOString()
         };
 
@@ -249,6 +253,8 @@ _"${source.backContent}"_
             photoBase64: formData.photoBase64,
             signatureBase64: formData.signatureBase64,
             activeTheme: formData.activeTheme,
+            employeeId: formData.employeeId,
+            joiningDate: formData.joiningDate,
             timestamp: new Date().toISOString()
         };
         setSavedRecords(prev => {
@@ -267,7 +273,9 @@ _"${source.backContent}"_
             mobileNo: '',
             emergencyContact: '',
             photoBase64: '',
-            signatureBase64: ''
+            signatureBase64: '',
+            employeeId: 'HXL12345',
+            joiningDate: `${new Date().getFullYear()}-01-01`
         }));
         setActiveTab('form-section');
         setIsFlipped(false);
